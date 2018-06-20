@@ -1,4 +1,5 @@
 #include <Cosa/UART.hh>
+#include <wlib/state_machine>
 
 enum { BAUD_RATE = 9600 };
 
