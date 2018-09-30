@@ -14,7 +14,6 @@ project:
   - wlib
   - waterloop
   compile_options:
-    header_only: true
     wio_version: 0.4.2
     default_target: tests
 
@@ -24,10 +23,4 @@ targets:
     platform: avr
     framework: cosa
     board: mega2560
-
-dependencies:
-  wlib-memory:
-    version: 1.0.4
-  wlib-tmp:
-    version: 1.0.2
 
