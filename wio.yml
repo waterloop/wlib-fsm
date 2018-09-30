@@ -15,12 +15,13 @@ project:
   - waterloop
   compile_options:
     wio_version: 0.4.2
-    default_target: tests
+    standard: c99,c++11
 
 targets:
-  tests:
-    src: tests
-    platform: avr
-    framework: cosa
-    board: mega2560
+  test-simple:
+    src: test-simple
+    platform: native
+  test-complex:
+    src: test-complex
+    platform: native
 

@@ -8,7 +8,7 @@
  * states, guards, entries, and exits.
  */
 #define STATE_DECLARE(...) VFUNC(STATE_DECLARE, __VA_ARGS__)
-#define STATE_DEFINE (...) VFUNC(STATE_DEFINE,  __VA_ARGS__)
+#define STATE_DEFINE(...) VFUNC(STATE_DEFINE,  __VA_ARGS__)
 #define STATE_DECLARE2(state_machine, stateName) \
     void ST_##stateName(const sm_no_data*); \
     state_action<state_machine, sm_no_data, &state_machine::ST_##stateName> stateName;
@@ -21,7 +21,7 @@
     void state_machine::ST_##stateName(const sm_event_data* data)
 
 #define GUARD_DECLARE(...) VFUNC(GUARD_DECLARE, __VA_ARGS__)
-#define GUARD_DEFINE (...) VFUNC(GUARD_DEFINE,  __VA_ARGS__)
+#define GUARD_DEFINE(...) VFUNC(GUARD_DEFINE,  __VA_ARGS__)
 #define GUARD_DECLARE2(state_machine, guardName) \
     bool GD_##guardName(const sm_no_data*); \
     guard_condition<state_machine, sm_no_data, &state_machine::GD_##guardName> guardName;
@@ -34,7 +34,7 @@
     bool state_machine::GD_##guardName(const sm_event_data* data)
 
 #define ENTRY_DECLARE(...) VFUNC(ENTRY_DECLARE, __VA_ARGS__)
-#define ENTRY_DEFINE (...) VFUNC(ENTRY_DEFINE,  __VA_ARGS__)
+#define ENTRY_DEFINE(...) VFUNC(ENTRY_DEFINE,  __VA_ARGS__)
 #define ENTRY_DECLARE2(state_machine, entryName) \
     void EN_##entryName(const sm_no_data*); \
     entry_action<state_machine, sm_no_data, &state_machine::EN_##entryName> entryName;
@@ -46,8 +46,8 @@
 #define ENTRY_DEFINE3(state_machine, entryName, sm_event_data) \
     void state_machine::EN_##entryName(const sm_event_data* data)
 
-#define EXIT_DECLARE(...) VFUNC(ENTRY_DECLARE, __VA_ARGS__)
-#define EXIT_DEFINE (...) VFUNC(ENTRY_DEFINE,  __VA_ARGS__)
+#define EXIT_DECLARE(...) VFUNC(EXIT_DECLARE, __VA_ARGS__)
+#define EXIT_DEFINE(...) VFUNC(EXIT_DEFINE,  __VA_ARGS__)
 #define EXIT_DECLARE2(state_machine, exitName) \
     void EX_##exitName(void); \
     exit_action<state_machine, &state_machine::EX_##exitName> exitName;
@@ -64,13 +64,19 @@
  * of transitions defined does not equal the
  * number of states.
  */
-#define BEGIN_TRANSITION_MAP \
+#define BEGIN_TRANSITION_MAP() \
     static const state_type TRANSITIONS[] = {
 #define TRANSITION_MAP_ENTRY(entry) \
         entry,
-#define END_TRANSITION_MAP(data, dataType) \
+#define END_TRANSITION_MAP(...) VFUNC(END_TRANSITION_MAP, __VA_ARGS__)
+#define END_TRANSITION_MAP1() \
     }; \
-    ASSERT_TRUE(current_state() < ST_MAX_STATES); \
+    assert(current_state() < ST_MAX_STATES); \
+    external_event<sm_no_data>(TRANSITIONS[current_state()], nullptr); \
+    static_assert((sizeof(TRANSITIONS) / sizeof(state_type)) == ST_MAX_STATES, "Invalid number of transitions");
+#define END_TRANSITION_MAP2(data, dataType) \
+    }; \
+    assert(current_state() < ST_MAX_STATES); \
     external_event<dataType>(TRANSITIONS[current_state()], data); \
     static_assert((sizeof(TRANSITIONS) / sizeof(state_type)) == ST_MAX_STATES, "Invalid number of transitions");
 
@@ -94,14 +100,14 @@
  * states in the state map does not equal the
  * number of defined states.
  */
-#define BEGIN_STATE_MAP \
+#define BEGIN_STATE_MAP() \
     private:\
         virtual const state_map_row_ex* state_map_ex() { return nullptr; } \
         virtual const state_map_row* state_map() { \
             static const state_map_row STATE_MAP[] = {
 #define STATE_MAP_ENTRY(stateName)\
                 { stateName },
-#define END_STATE_MAP \
+#define END_STATE_MAP() \
             }; \
             static_assert((sizeof(STATE_MAP) / sizeof(state_map_row)) == ST_MAX_STATES, "Invalid state map size"); \
             return &STATE_MAP[0]; \
@@ -116,7 +122,7 @@
  * states in the state map does not equal the
  * number of defined states.
  */
-#define BEGIN_STATE_MAP_EX \
+#define BEGIN_STATE_MAP_EX() \
     private: \
         virtual const state_map_row* state_map() { return nullptr; } \
         virtual const state_map_row_ex* state_map_ex() { \
@@ -125,7 +131,7 @@
                 { stateName, 0, 0, 0 },
 #define STATE_MAP_ENTRY_ALL_EX(stateName, guardName, entryName, exitName) \
                 { stateName, guardName, entryName, exitName },
-#define END_STATE_MAP_EX \
+#define END_STATE_MAP_EX() \
             }; \
             static_assert((sizeof(STATE_MAP) / sizeof(state_map_row_ex)) == ST_MAX_STATES, "Invalid state map size"); \
             return &STATE_MAP[0]; \

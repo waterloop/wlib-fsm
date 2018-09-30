@@ -13,5 +13,6 @@
 #include <wlib/fsm/SmStateType.h>
 #include <wlib/fsm/StateMapRow.h>
 #include <wlib/fsm/StateMachine.h>
+#include <wlib/fsm/SmDefine.h>
 
 #endif
