@@ -1,10 +1,11 @@
-pkg:
+type: pkg
+
+project:
   name: wlib-fsm
   description: Lightweight, fast, and minimal branching State Machine
   repository: https://github.com/waterloop/wlib-fsm.git
   version: 1.0.0
   author: Jeff Niu
-  contributors: []
   organization: Waterloop
   keywords:
   - state-machine
@@ -12,31 +13,15 @@ pkg:
   - wio
   - wlib
   - waterloop
-  license: MIT
-  header_only: true
-  platform: ALL
-  framework:
-  - ALL
-  board:
-  - ALL
-  compile_flags: []
-  ide: none
+  compile_options:
+    wio_version: 0.4.2
+    standard: c99,c++11
 
 targets:
-  default: tests
-  create:
-    tests:
-      board: ALL
-      target_compile_flags: []
-      pkg_compile_flags: []
+  test-simple:
+    src: test-simple
+    platform: native
+  test-complex:
+    src: test-complex
+    platform: native
 
-dependencies:
-  wlib-memory:
-    version: latest
-    vendor: false
-    compile_flags: []
-
-  wlib-tmp:
-    version: latest
-    vendor: false
-    compile_flags: []

@@ -1,6 +1,18 @@
 #ifndef __WLIB_STATE_MACHINE__
 #define __WLIB_STATE_MACHINE__
 
+#include <wlib/fsm/EntryBase.h>
+#include <wlib/fsm/EntryAction.h>
+#include <wlib/fsm/ExitBase.h>
+#include <wlib/fsm/ExitAction.h>
+#include <wlib/fsm/GuardBase.h>
+#include <wlib/fsm/GuardCondition.h>
+#include <wlib/fsm/StateBase.h>
+#include <wlib/fsm/StateAction.h>
+#include <wlib/fsm/SmEventData.h>
+#include <wlib/fsm/SmStateType.h>
+#include <wlib/fsm/StateMapRow.h>
 #include <wlib/fsm/StateMachine.h>
+#include <wlib/fsm/SmDefine.h>
 
 #endif
