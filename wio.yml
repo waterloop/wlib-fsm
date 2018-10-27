@@ -4,7 +4,7 @@ project:
   name: wlib-fsm
   description: Lightweight, fast, and minimal branching State Machine
   repository: https://github.com/waterloop/wlib-fsm.git
-  version: 1.0.0
+  version: 1.0.1
   author: Jeff Niu
   organization: Waterloop
   keywords:

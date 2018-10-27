@@ -1,15 +1,13 @@
 #include <wlib/state_machine>
 #include <cstdio>
 
-using namespace wlp;
-
-class SimpleData : public sm_event_data {
+class SimpleData : public wlp::sm_event_data {
 public:
     SimpleData(int t_value) : value(t_value) {}
     int value;
 };
 
-class SimpleMachine: public state_machine {
+class SimpleMachine: public wlp::state_machine {
 public:
     enum States {
         ST_IDLE,
